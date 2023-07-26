@@ -34,12 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CustomAccessDeniedHandler customAccessDeniedHandler() {return new CustomAccessDeniedHandler();}
     protected  void configure(HttpSecurity http) throws Exception {
-        http.csrf().ignoringAntMatchers("/api/v1/login");
-        http.authorizeRequests().antMatchers("/api/v1/login**").permitAll();
+        http.csrf().ignoringAntMatchers("/api/v1/**");
+//        http.authorizeRequests().antMatchers("/api/v1/login**").access("hasRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/api/v1/login**").permitAll(); // not authenticate with /login api
         http.antMatcher("/api/v1/**").httpBasic().authenticationEntryPoint(authEndpoint()).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/v1/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-                .antMatchers(HttpMethod.POST, "/api/v1/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.GET, "/api/v1/users**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.POST, "/api/v1/login**").access("hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.DELETE, "/api/v1/**").access("hasRole('ROLE_ADMIN')").and()
                 .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());

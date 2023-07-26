@@ -53,8 +53,8 @@ public class AuthenFilter extends UsernamePasswordAuthenticationFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
             //todo: is token valid?
-            chain.doFilter(request, response);
             //todo: is user exist?
         }
+        chain.doFilter(request, response);
     }
 }

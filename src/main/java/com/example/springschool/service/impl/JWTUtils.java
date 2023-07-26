@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Component
 public class JWTUtils {
-    public static final String SECRET_KEY = "111111111111111111111111111111111111111";
+    public static final String SECRET_KEY = "1112343223523523515235235211111111111111111111111111";
     public static final String USERNAME = "username";
     public static final int expireTime = 86400000;
     public static final int refreshExpireTime = 106400000;
@@ -35,23 +35,43 @@ public class JWTUtils {
         return token;
     }
 
-    public static String genToken(User user){
+//    public static String genToken(User user){
+//        String token = null;
+//        try {
+//            JWSSigner signer = new MACSigner(generateShareSecret());
+//            JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
+//            builder.claim(USERNAME, user.getUsername());
+//            builder.expirationTime(new Date(System.currentTimeMillis() + expireTime)); // lấy ra thời gian thực tế hết hạn
+//            JWTClaimsSet claimsSet = builder.build(); // đóng gói payload của token
+//            SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
+//            signedJWT.sign(signer); // kí
+//            token = signedJWT.serialize();
+//            return token;
+//        } catch(Exception e){
+//            System.err.println(e);
+//        }
+//        return token;
+//    }
+
+
+    public static String genToken(User user) {
         String token = null;
         try {
             JWSSigner signer = new MACSigner(generateShareSecret());
             JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
             builder.claim(USERNAME, user.getUsername());
-            builder.expirationTime(new Date(System.currentTimeMillis() + expireTime)); // lấy ra thời gian thực tế hết hạn
-            JWTClaimsSet claimsSet = builder.build(); // đóng gói payload của token
+            builder.expirationTime(new Date(System.currentTimeMillis() + expireTime));
+            JWTClaimsSet claimsSet = builder.build(); // đóng gói cho payload token
             SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
-            signedJWT.sign(signer); // kí
+            signedJWT.sign(signer);
             token = signedJWT.serialize();
             return token;
-        } catch(Exception e){
-            System.err.println(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return token;
     }
+
 
     public boolean isTokenExpire(String token){
         Date expiredTime = getExpireDateFromToken(token);

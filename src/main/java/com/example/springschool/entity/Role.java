@@ -9,19 +9,22 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.util.List;
 
-//@Data
-//@NoArgsConstructor
-//@SuperBuilder
-//@Entity(name="role")
+@Data
+@NoArgsConstructor
+@SuperBuilder
+@Entity(name="role")
 @Getter
 @Setter
 public class Role {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-//    @Column(name="role_name")
-    private String role_name;
+    @Column(name="role_name")
+    private String roleName;
 
-//    @ManyToMany(mappedBy = "roleList")
-//    List<User> userList;
+    @ManyToMany(mappedBy = "roleList")
+    List<User> userList;
+
+    @ManyToMany(mappedBy = "roleList")
+    List<Team> teamList;
 }
